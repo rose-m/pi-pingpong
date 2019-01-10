@@ -7,7 +7,7 @@ from shared.sense_hat import Sense
 
 
 class SenseDisplay(Display):
-    SCROLL_SPEED = 0.05
+    SCROLL_SPEED = 0.06
 
     def __init__(self):
         super().__init__()
@@ -22,7 +22,7 @@ class SenseDisplay(Display):
 
     def clear(self) -> None:
         self._running = False
-        self._thread.join(timeout=5)
+        self._thread.join(timeout=2)
         Sense.hat().clear()
 
     def show_message(self, message: str, color: Color = Color.DEFAULT) -> None:
