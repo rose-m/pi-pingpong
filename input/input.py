@@ -34,6 +34,9 @@ class Input(ABC):
     def init(self):
         pass
 
+    def clear(self):
+        pass
+
     @abstractmethod
     def register_key_handler(self, handler: Callable[[], None]) -> None:
         pass

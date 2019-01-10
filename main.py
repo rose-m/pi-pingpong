@@ -18,6 +18,7 @@ def main() -> None:
     config = ClientConfig(SERVER_URL)
     display = Display.get_display()
     input = Input.get_input()
+    atexit.register(input.clear)
     atexit.register(display.clear)
 
     try:
