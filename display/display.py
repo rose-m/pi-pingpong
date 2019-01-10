@@ -4,7 +4,7 @@ from display.color import Color
 
 
 class Display(ABC):
-    _display: 'Display' = None
+    _display = None
 
     @staticmethod
     def get_display() -> 'Display':
@@ -19,6 +19,7 @@ class Display(ABC):
             import sense_hat
             sense_available = True
         except ImportError:
+            print('SenseHat not available - using console...')
             pass
 
         if sense_available:
