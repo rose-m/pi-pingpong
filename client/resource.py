@@ -13,6 +13,8 @@ class ResourceStatus(Enum):
 
 
 class Resource:
+    _poll_timer: Timer
+
     API_PATH_STATUS = '/collaboration-resource/<resource>/status'
     API_PATH_OCCUPY = '/collaboration-resource/<resource>/occupy'
     API_PATH_RELEASE = '/collaboration-resource/<resource>/release'
@@ -23,7 +25,7 @@ class Resource:
         self._status = ResourceStatus.FREE
         self._validity = -1
 
-        self._poll_timer: Timer = None
+        self._poll_timer = None
 
     def __enter__(self) -> 'Resource':
         try:

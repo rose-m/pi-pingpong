@@ -5,11 +5,13 @@ from display.display import Display
 
 
 class SenseDisplay(Display):
+    _sense: SenseHat
+
     SCROLL_SPEED = 1.0
 
     def __init__(self):
         super().__init__()
-        self._sense: SenseHat = None
+        self._sense = None
 
     def init(self):
         self._sense = SenseHat()
