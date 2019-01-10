@@ -14,8 +14,20 @@ class Display(ABC):
 
     @staticmethod
     def _initialize_display() -> 'Display':
-        from display.console_display import ConsoleDisplay
-        display = ConsoleDisplay()
+        sense_available = False
+        try:
+            import sense_hat
+            sense_available = True
+        except ImportError:
+            pass
+
+        if sense_available:
+            from display.sense_display import SenseDisplay
+            display = SenseDisplay()
+        else:
+            from display.console_display import ConsoleDisplay
+            display = ConsoleDisplay()
+
         display.init()
         return display
 

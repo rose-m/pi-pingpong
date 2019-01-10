@@ -23,7 +23,8 @@ def main() -> None:
             while True:
                 status = resource.get_status()
                 if last_status != status:
-                    display.show_message('Status changed to: %s' % status)
+                    print('Status changed to: %s' % status)
+                    display.show_message('Status: %s' % status)
                     last_status = status
                 try:
                     sleep(1)
