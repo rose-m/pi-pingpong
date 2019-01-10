@@ -5,8 +5,6 @@ from display.display import Display
 
 
 class SenseDisplay(Display):
-    _sense: SenseHat
-
     SCROLL_SPEED = 1.0
 
     def __init__(self):

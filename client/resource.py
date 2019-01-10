@@ -13,7 +13,6 @@ class ResourceStatus(Enum):
 
 
 class Resource:
-    _poll_timer: Timer
 
     API_PATH_STATUS = '/collaboration-resource/<resource>/status'
     API_PATH_OCCUPY = '/collaboration-resource/<resource>/occupy'
