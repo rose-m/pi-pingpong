@@ -14,6 +14,9 @@ class SenseDisplay(Display):
     def init(self):
         self._sense = SenseHat()
 
+    def clear(self):
+        self._sense.clear()
+
     def show_message(self, message: str, color: Color = Color.DEFAULT) -> None:
         self._sense.show_message(message, SenseDisplay.SCROLL_SPEED, self._convert_color(color))
 

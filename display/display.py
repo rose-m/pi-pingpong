@@ -35,6 +35,9 @@ class Display(ABC):
     def init(self) -> None:
         pass
 
+    def clear(self) -> None:
+        pass
+
     @abstractmethod
     def show_message(self, message: str, color: Color = Color.DEFAULT) -> None:
         pass

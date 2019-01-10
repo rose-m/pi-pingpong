@@ -1,3 +1,4 @@
+import atexit
 from time import sleep
 
 from client.config import ClientConfig
@@ -15,6 +16,7 @@ def main() -> None:
 
     config = ClientConfig(SERVER_URL)
     display = Display.get_display()
+    atexit.register(display.clear)
 
     try:
         with Resource(RESOURCE_TYPE, config) as resource:
