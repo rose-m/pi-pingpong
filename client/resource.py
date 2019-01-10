@@ -13,7 +13,6 @@ class ResourceStatus(Enum):
 
 
 class Resource:
-
     API_PATH_STATUS = '/collaboration-resource/<resource>/status'
     API_PATH_OCCUPY = '/collaboration-resource/<resource>/occupy'
     API_PATH_RELEASE = '/collaboration-resource/<resource>/release'
@@ -48,12 +47,35 @@ class Resource:
         return self._validity
 
     def occupy(self) -> bool:
-        # url = self._config.get_url(Resource.API_PATH_OCCUPY.replace('<resource>', self._type))
-        return True
+        print('Occupying resource')
+        url = self._config.get_url(Resource.API_PATH_OCCUPY.replace('<resource>', self._type))
+        try:
+            result = requests.put(url, timeout=2)
+            if result.status_code == 200 or result.status_code == 201:
+                print(url, result.status_code)
+                self._check_status()
+                return True
+            else:
+                return False
+        except Exception as e:
+            print('Error while updating status')
+            print(e)
+            return False
 
-    def free(self) -> bool:
-        # result = self._execute_request(Resource.API_PATH_OCCUPY.replace('<resource>', self._type))
-        return True
+    def release(self) -> bool:
+        print('Freeing resource')
+        url = self._config.get_url(Resource.API_PATH_RELEASE.replace('<resource>', self._type))
+        try:
+            result = requests.put(url, timeout=2)
+            if result.status_code == 200 or result.status_code == 201:
+                self._check_status()
+                return True
+            else:
+                return False
+        except Exception as e:
+            print('Error while updating status')
+            print(e)
+            return False
 
     def _check_status(self) -> None:
         url = self._config.get_url(Resource.API_PATH_STATUS.replace('<resource>', self.get_type()))
@@ -61,6 +83,7 @@ class Resource:
         self._status = ResourceStatus[res['status']]
         if 'timeRemaining' in res:
             self._validity = res['timeRemaining']
+        print('Updated status: %s' % self._status)
 
     def _start_timer(self) -> None:
         self._clear_timer()

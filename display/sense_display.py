@@ -1,10 +1,9 @@
 from threading import Thread
 from time import sleep
 
-from sense_hat import SenseHat
-
 from display.color import Color
 from display.display import Display
+from shared.sense_hat import Sense
 
 
 class SenseDisplay(Display):
@@ -12,21 +11,19 @@ class SenseDisplay(Display):
 
     def __init__(self):
         super().__init__()
-        self._sense = None
         self._message = None
         self._color = None
         self._thread = None
         self._running = True
 
     def init(self) -> None:
-        self._sense = SenseHat()
         self._thread = Thread(target=self._render_message)
         self._thread.start()
 
     def clear(self) -> None:
         self._running = False
         self._thread.join(timeout=5)
-        self._sense.clear()
+        Sense.hat().clear()
 
     def show_message(self, message: str, color: Color = Color.DEFAULT) -> None:
         self._message = message
@@ -41,7 +38,7 @@ class SenseDisplay(Display):
     def _render_message(self) -> None:
         while self._running:
             if self._message is not None:
-                self._sense.show_message(self._message, SenseDisplay.SCROLL_SPEED, self._convert_color(self._color))
+                Sense.hat().show_message(self._message, SenseDisplay.SCROLL_SPEED, self._convert_color(self._color))
             sleep(0.5)
 
     @staticmethod

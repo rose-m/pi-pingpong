@@ -19,7 +19,7 @@ class Display(ABC):
             import sense_hat
             sense_available = True
         except ImportError:
-            print('SenseHat not available - using console...')
+            print('Display: SenseHat not available - using console...')
             pass
 
         if sense_available:

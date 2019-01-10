@@ -6,6 +6,7 @@ from client.resource import Resource, ResourceStatus
 from config import SERVER_URL, RESOURCE_TYPE
 from display.color import Color
 from display.display import Display
+from input.input import Input
 
 
 def main() -> None:
@@ -16,10 +17,12 @@ def main() -> None:
 
     config = ClientConfig(SERVER_URL)
     display = Display.get_display()
+    input = Input.get_input()
     atexit.register(display.clear)
 
     try:
         with Resource(RESOURCE_TYPE, config) as resource:
+            input.register_key_handler(lambda: handle_input(resource))
             last_status = resource.get_status()
             display.show_message(last_status.name, get_color_for_status(last_status))
             while True:
@@ -34,6 +37,16 @@ def main() -> None:
                     exit()
     except ConnectionError:
         display.show_message('Initial status check failed - stopping', Color.RED)
+
+
+def handle_input(resource: Resource):
+    status = resource.get_status()
+    if status is ResourceStatus.RESERVED:
+        resource.occupy()
+    elif status is ResourceStatus.OCCUPIED:
+        resource.release()
+    elif status is ResourceStatus.FREE:
+        resource.occupy()
 
 
 def get_color_for_status(status: ResourceStatus) -> Color:
