@@ -1,6 +1,9 @@
+from time import sleep
+
 from client.config import ClientConfig
 from client.resource import Resource
 from config import SERVER_URL, RESOURCE_TYPE
+from display.color import Color
 from display.display import Display
 
 
@@ -11,10 +14,23 @@ def main() -> None:
     print()
 
     config = ClientConfig(SERVER_URL)
-    resource = Resource(RESOURCE_TYPE, config)
     display = Display.get_display()
 
-    display.show_message('Hello! :)')
+    try:
+        with Resource(RESOURCE_TYPE, config) as resource:
+            last_status = resource.get_status()
+            display.show_message('Status: %s' % last_status)
+            while True:
+                status = resource.get_status()
+                if last_status != status:
+                    display.show_message('Status changed to: %s' % status)
+                    last_status = status
+                try:
+                    sleep(1)
+                except KeyboardInterrupt:
+                    exit()
+    except ConnectionError:
+        display.show_message('Initial status check failed - stopping', Color.RED)
 
 
 if __name__ == '__main__':
