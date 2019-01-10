@@ -7,7 +7,7 @@ from shared.sense_hat import Sense
 
 
 class SenseDisplay(Display):
-    SCROLL_SPEED = 0.4
+    SCROLL_SPEED = 0.05
 
     def __init__(self):
         super().__init__()
