@@ -21,7 +21,7 @@ def main() -> None:
     try:
         with Resource(RESOURCE_TYPE, config) as resource:
             last_status = resource.get_status()
-            display.show_message('Status: %s' % last_status)
+            display.show_message('Status: %s' % last_status.name, get_color_for_status(last_status))
             while True:
                 status = resource.get_status()
                 if last_status != status:
