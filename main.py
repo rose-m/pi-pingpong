@@ -2,7 +2,7 @@ import atexit
 from time import sleep
 
 from client.config import ClientConfig
-from client.resource import Resource
+from client.resource import Resource, ResourceStatus
 from config import SERVER_URL, RESOURCE_TYPE
 from display.color import Color
 from display.display import Display
@@ -26,7 +26,7 @@ def main() -> None:
                 status = resource.get_status()
                 if last_status != status:
                     print('Status changed to: %s' % status)
-                    display.show_message('Status: %s' % status)
+                    display.show_message('Status: %s' % status.name, get_color_for_status(status))
                     last_status = status
                 try:
                     sleep(1)
@@ -34,6 +34,15 @@ def main() -> None:
                     exit()
     except ConnectionError:
         display.show_message('Initial status check failed - stopping', Color.RED)
+
+
+def get_color_for_status(status: ResourceStatus) -> Color:
+    if status is ResourceStatus.FREE:
+        return Color.GREEN
+    elif status is ResourceStatus.OCCUPIED:
+        return Color.DEFAULT
+    elif status is ResourceStatus.RESERVED:
+        return Color.RED
 
 
 if __name__ == '__main__':
